@@ -1,0 +1,52 @@
+war-card-game/
+├── client/                             # 🔵 React frontend
+│   ├── public/
+│   │   └── index.html
+│   ├── src/
+│   │   ├── components/                 # UI components
+│   │   │   ├── Card.js
+│   │   │   ├── GameBoard.js
+│   │   │   ├── Scoreboard.js
+│   │   ├── pages/                      # Pages/views
+│   │   │   ├── Login.js
+│   │   │   ├── Signup.js
+│   │   │   ├── Game.js
+│   │   │   ├── ScoreHistory.js
+│   │   ├── utils/                      # Helpers
+│   │   │   └── auth.js                 # Token storage/checks
+│   │   ├── App.js                      # Main app structure
+│   │   └── index.js                    # React entry point
+│   ├── .env                            # React API base URL
+│   └── package.json
+│
+├── server/                             # 🟢 Node.js backend
+│   ├── controllers/                    # API logic
+│   │   ├── authController.js           # Signup, login
+│   │   ├── gameController.js           # Game logic endpoints
+│   │   ├── scoreController.js          # Save and fetch scores
+│
+│   ├── middleware/
+│   │   └── authMiddleware.js           # JWT verification
+│
+│   ├── models/                         # App logic & DB models
+│   │   ├── User.js                     # User schema (auth + scores)
+│   │   ├── Game.js                     # Game state manager
+│   │   ├── Deck.js                     # Deck logic
+│   │   ├── Card.js                     # Card class
+│
+│   ├── routes/                         # Route definitions
+│   │   ├── authRoutes.js               # /api/auth
+│   │   ├── gameRoutes.js               # /api/game
+│   │   ├── scoreRoutes.js              # /api/scores
+│
+│   ├── config/
+│   │   └── db.js                       # DB connection (MongoDB or other)
+│
+│   ├── .env                            # Secrets: DB URI, JWT secret
+│   ├── app.js                          # Express setup
+│   ├── server.js                       # Entry point (starts server)
+│   └── package.json
+│
+├── .gitignore
+├── README.md
+├── package.json                        # Optional: top-level for dev scripts
