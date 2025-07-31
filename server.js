@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const app= express();
+
 const path= require('path');
 const cors =require('cors');
 const mongoose= require('mongoose');
@@ -16,10 +17,10 @@ app.use(express.json());
 app.use('/', express.static(path.join(__dirname, '/public')));
 
 
-
-app.use('/game', require('./routes/gameRoutes'));
-app.use('/auth', require('./routes/authRoutes'));
-app.use('/scores', require('./routes/scoreRoutes'));
+app.use(['/'], require('./routes/root'));
+app.use('/game', require('./routes/game'));
+app.use('/auth', require('./routes/auth'));
+app.use('/scores', require('./routes/score'));
 
 
 app.all('/{*any}', (req, res) => {
@@ -32,6 +33,7 @@ app.all('/{*any}', (req, res) => {
         res.type('txt').send("404 Not Found");
     }
 });
+
 
 
 app.use(errorHandler);
