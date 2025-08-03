@@ -1,13 +1,12 @@
 require('dotenv').config();
 const express = require('express');
 const app= express();
-
 const path= require('path');
 const cors =require('cors');
 const mongoose= require('mongoose');
 const connectDB= require('./config/db');
 const errorHandler = require('./middleware/errorHandler');
-const PORT= process.env.PORT || 5000;
+const PORT= process.env.PORT || 5010;
 
 
 
@@ -17,7 +16,7 @@ app.use(express.json());
 app.use('/', express.static(path.join(__dirname, '/public')));
 
 
-app.use(['/'], require('./routes/root'));
+app.use(['/', '/index','/index.html'], require('./routes/root'));
 app.use('/game', require('./routes/game'));
 app.use('/auth', require('./routes/auth'));
 app.use('/scores', require('./routes/score'));
