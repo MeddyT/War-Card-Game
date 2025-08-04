@@ -59,11 +59,36 @@ shuffleDeck(){
         [this.deck[i],this.deck[j]]= [this.deck[j],this.deck[i]];
     }
 }
+
 }
 
+class Game{
+    constructor(deckObj){
+        this.deckObj= deckObj
+        this.deck=this.deckObj.deck;
+        this.player1Deck=this.deck.slice(0,26);
+        this.player2Deck=this.deck.slice(26,52);
+        }
 
-const deck1= new Deck(); 
-deck1.printDeck();
+    printPlayer1Deck(){
+        console.log("=======Player 1 Deck=======:")
+        for (let i=0; i<this.player1Deck.length;i++){
+            console.log(this.player1Deck[i]);
+    }
+    }
+    
+    printPlayer2Deck(){
+        console.log("=======Player 2 Deck=======:")
+        for (let i=0; i<this.player2Deck.length;i++){
+            console.log(this.player2Deck[i]);
+    }
+    }
+}
+
+const deck1= new Deck();
 deck1.shuffleDeck();
-console.log("============SHUFFLED DECK============")
-deck1.printDeck();
+game1= new Game(deck1);
+game1.printPlayer1Deck();
+game1.printPlayer2Deck();
+
+
