@@ -70,6 +70,73 @@ class Game{
         this.player2Deck=this.deck.slice(26,52);
         }
 
+    compareDecks(){
+        while(this.player1Deck.length>0 && this.player2Deck.length>0){
+            
+            this.topcard2=this.player2Deck.shift();
+            this.topcard1=this.player1Deck.shift();
+
+            if (this.topcard1.value>this.topcard2.value){
+
+                this.player1Deck.push(this.topcard1);
+                this.player1Deck.push(this.topcard2);
+
+            }else if (this.topcard2.value>this.topcard1.value){
+            
+                this.player2Deck.push(this.topcard2);
+                this.player2Deck.push(this.topcard1);
+
+            }else { 
+                let warPile=[];
+                this.War(this.topcard1,this.topcard2,warPile);
+            }
+            
+        }
+        if (this.player1Deck.length==0) {
+            console.log("Player 2 Wins!");
+            return;
+        }
+        if (this.player2Deck.length==0) {
+            console.log("Player 1 Wins!");
+            return;
+        }
+    }
+
+    
+
+
+    War(topcard1,topcard2, warPile){
+
+        if(this.player1Deck.length<4) {
+            console.log("Player 2 Wins!");
+            return;
+        }
+        else if(this.player2Deck.length<4) {
+            console.log("Player 1 Wins!");
+            return;
+        }
+        warPile.push(topcard1);
+        warPile.push(topcard2);
+        warPile.push(this.player1Deck.shift()); 
+        warPile.push(this.player2Deck.shift()); 
+        warPile.push(this.player1Deck.shift()); 
+        warPile.push(this.player2Deck.shift()); 
+        warPile.push(this.player1Deck.shift()); 
+        warPile.push(this.player2Deck.shift()); 
+        
+        this.warTopCard1= this.player1Deck.shift();
+        this.warTopCard2= this.player2Deck.shift();
+
+        warPile.push(this.warTopCard1);
+        warPile.push(this.warTopCard2);
+
+        if (this.warTopCard1.value>this.warTopCard2.value){
+            this.player1Deck.push(...warPile);
+        } else if (this.warTopCard2.value>this.warTopCard1.value){
+            this.player2Deck.push(...warPile);
+        } else this.War(this.warTopCard1,this.warTopCard2, warPile);
+    }
+
     printPlayer1Deck(){
         console.log("=======Player 1 Deck=======:")
         for (let i=0; i<this.player1Deck.length;i++){
@@ -87,7 +154,7 @@ class Game{
 
 const deck1= new Deck();
 deck1.shuffleDeck();
-game1= new Game(deck1);
+const game1= new Game(deck1);
 game1.printPlayer1Deck();
 game1.printPlayer2Deck();
 
