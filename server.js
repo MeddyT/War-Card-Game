@@ -18,7 +18,7 @@ app.use('/', express.static(path.join(__dirname, '/public')));
 
 app.use(['/', '/index','/index.html'], require('./routes/root'));
 app.use('/game', require('./routes/game'));
-app.use('/auth', require('./routes/auth'));
+app.use('/auth', require('./routes/auth')); 
 app.use('/scores', require('./routes/score'));
 
 
