@@ -70,92 +70,102 @@ class Game{
         this.player2Deck=this.deck.slice(26,52);
         }
 
-    compareDecks(){
-        while(this.player1Deck.length>0 && this.player2Deck.length>0){
-            
-            this.topcard2=this.player2Deck.shift();
-            this.topcard1=this.player1Deck.shift();
-
-            if (this.topcard1.value>this.topcard2.value){
-
-                this.player1Deck.push(this.topcard1);
-                this.player1Deck.push(this.topcard2);
-
-            }else if (this.topcard2.value>this.topcard1.value){
-            
-                this.player2Deck.push(this.topcard2);
-                this.player2Deck.push(this.topcard1);
-
-            }else { 
-                let warPile=[];
-                this.War(this.topcard1,this.topcard2,warPile);
-            }
-            
+    playOneTurn() {
+        if (this.player1Deck.length === 0) {
+            return { gameOver: true, winner: "Player 2" };
         }
-        if (this.player1Deck.length==0) {
-            console.log("Player 2 Wins!");
-            return;
+        if (this.player2Deck.length === 0) {
+            return { gameOver: true, winner: "Player 1" };
         }
-        if (this.player2Deck.length==0) {
-            console.log("Player 1 Wins!");
-            return;
-        }
-    }
 
-    
+        const topcard1 = this.player1Deck.shift();
+        const topcard2 = this.player2Deck.shift();
+        const warPile = [topcard1, topcard2];
 
-
-    War(topcard1,topcard2, warPile){
-
-        if(this.player1Deck.length<4) {
-            console.log("Player 2 Wins!");
-            return;
-        }
-        else if(this.player2Deck.length<4) {
-            console.log("Player 1 Wins!");
-            return;
-        }
-        warPile.push(topcard1);
-        warPile.push(topcard2);
-        warPile.push(this.player1Deck.shift()); 
-        warPile.push(this.player2Deck.shift()); 
-        warPile.push(this.player1Deck.shift()); 
-        warPile.push(this.player2Deck.shift()); 
-        warPile.push(this.player1Deck.shift()); 
-        warPile.push(this.player2Deck.shift()); 
-        
-        this.warTopCard1= this.player1Deck.shift();
-        this.warTopCard2= this.player2Deck.shift();
-
-        warPile.push(this.warTopCard1);
-        warPile.push(this.warTopCard2);
-
-        if (this.warTopCard1.value>this.warTopCard2.value){
+        if (topcard1.value > topcard2.value) {
             this.player1Deck.push(...warPile);
-        } else if (this.warTopCard2.value>this.warTopCard1.value){
+            return {
+                result: "Player 1 wins the turn",
+                topcard1,
+                topcard2,
+                player1DeckCount: this.player1Deck.length,
+                player2DeckCount: this.player2Deck.length,
+            };
+        } else if (topcard2.value > topcard1.value) {
             this.player2Deck.push(...warPile);
-        } else this.War(this.warTopCard1,this.warTopCard2, warPile);
+            return {
+                result: "Player 2 wins the turn",
+                topcard1,
+                topcard2,
+                player1DeckCount: this.player1Deck.length,
+                player2DeckCount: this.player2Deck.length,
+            };
+        } else {
+            return this.war(topcard1, topcard2, warPile);
+        }
     }
 
-    printPlayer1Deck(){
+    war(topcard1, topcard2, warPile) {
+        if (this.player1Deck.length < 4) {
+            return { gameOver: true, winner: "Player 2", reason: "Player 1 cannot continue war" };
+        }
+        if (this.player2Deck.length < 4) {
+            return { gameOver: true, winner: "Player 1", reason: "Player 2 cannot continue war" };
+        }
+
+        for (let i = 0; i < 3; i++) {
+            warPile.push(this.player1Deck.shift());
+            warPile.push(this.player2Deck.shift());
+        }
+
+        const warTopCard1 = this.player1Deck.shift();
+        const warTopCard2 = this.player2Deck.shift();
+        warPile.push(warTopCard1, warTopCard2);
+
+        if (warTopCard1.value > warTopCard2.value) {
+            this.player1Deck.push(...warPile);
+            return {
+                result: "Player 1 wins the war",
+                warTopCard1,
+                warTopCard2,
+                player1DeckCount: this.player1Deck.length,
+                player2DeckCount: this.player2Deck.length,
+            };
+        } else if (warTopCard2.value > warTopCard1.value) {
+            this.player2Deck.push(...warPile);
+            return {
+                result: "Player 2 wins the war",
+                warTopCard1,
+                warTopCard2,
+                player1DeckCount: this.player1Deck.length,
+                player2DeckCount: this.player2Deck.length,
+            };
+        } else {
+            return this.war(warTopCard1, warTopCard2, warPile);
+        }
+    }
+
+    consolePrintPlayer1Deck(){
         console.log("=======Player 1 Deck=======:")
         for (let i=0; i<this.player1Deck.length;i++){
             console.log(this.player1Deck[i]);
     }
     }
     
-    printPlayer2Deck(){
+    consolePrintPlayer2Deck(){
         console.log("=======Player 2 Deck=======:")
         for (let i=0; i<this.player2Deck.length;i++){
             console.log(this.player2Deck[i]);
     }
     }
+
+    
 }
 
-const deck1= new Deck();
-deck1.shuffleDeck();
-const game1= new Game(deck1);
-game1.printPlayer1Deck();
-game1.printPlayer2Deck();
 
 
+
+
+
+
+module.exports= {Card, Deck, Game};
